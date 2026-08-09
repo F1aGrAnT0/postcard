@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Промтелеком — Макет сайта</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        :root {
+            --b: #0055AA;
+            --bd: #0a2540;
+            --o: #ff6b35;
+            --t: #1a1a2e;
+            --ts: #5a5a6e;
+            --bg: #fff;
+            --bg2: #f5f7fa;
+            --br: #e2e8f0;
+            --cb: #fff;
+            --sh: 0 2px 8px rgba(0, 0, 0, .08);
+            --sh2: 0 8px 30px rgba(0, 0, 0, .12);
+            --r: 12px;
+            --tr: all .25s ease;
+        }
+
+        [data-theme="dark"] {
+            --t: #e8e8f0;
+            --ts: #a0a0b8;
+            --bg: #0f111a;
+            --bg2: #1a1d2e;
+            --br: #2a2d3e;
+            --cb: #1a1d2e;
+            --sh: 0 2px 8px rgba(0, 0, 0, .3);
+            --sh2: 0 8px 30px rgba(0, 0, 0, .4);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #e8ecf1;
+            padding: 20px;
+        }
+
+        /* ===== WRAPPER ===== */
+        .wrap {
+            background: var(--bg2);
+            padding: 16px;
+            border-radius: 16px;
+            min-height: 600px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* ===== TOP BAR ===== */
+        .bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .g {
+            display: flex;
+            gap: 4px;
+            background: var(--bg);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--br);
+        }
+
+        .cb {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ts);
+            transition: var(--tr);
+            background: none;
+        }
+
+        .cb:hover {
+            background: var(--bg2);
+        }
+
+        .cb.a {
+            background: var(--b);
+            color: #fff;
+        }
+
+        /* ===== VIEWPORT ===== */
+        .vp {
+            background: var(--bg);
+            border-radius: var(--r);
+            overflow: hidden;
+            box-shadow: var(--sh2);
+            margin: 0 auto;
+            transition: max-width .4s ease;
+            position: relative;
+        }
+
+        .vp.desk {
+            max-width: 1200px;
+        }
+
+        .vp.mob {
+            max-width: 375px;
+        }
+
+        /* ===== HEADER ===== */
+        .hd {
+            background: linear-gradient(135deg, var(--bd), var(--b));
+            color: #fff;
+            position: relative;
+        }
+
+        .ht {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        .lg {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .li {
+            width: 36px;
+            height: 36px;
+            background: #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--b);
+            font-size: 14px;
+        }
+
+        .lt {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: .5px;
+        }
+
+        .ls {
+            font-size: 11px;
+            opacity: .8;
+            margin-top: -2px;
+        }
+
+        .ha {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hp {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .hp span {
+            font-size: 12px;
+            opacity: .7;
+            display: block;
+            font-weight: 400;
+        }
+
+        .bl,
+        .bt {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, .15);
+            color: #fff;
+            backdrop-filter: blur(4px);
+            transition: var(--tr);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bl:hover,
+        .bt:hover {
+            background: rgba(255, 255, 255, .25);
+        }
+
+        .nv {
+            display: flex;
+            padding: 0 24px;
+            gap: 0;
+            overflow-x: auto;
+        }
+
+        .nl {
+            padding: 14px 18px;
+            color: rgba(255, 255, 255, .85);
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: var(--tr);
+            white-space: nowrap;
+        }
+
+        .nl:hover,
+        .nl.a {
+            color: #fff;
+            border-bottom-color: var(--o);
+        }
+
+        .bg {
+            display: none;
+            width: 40px;
+            height: 40px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, .15);
+            border-radius: 8px;
+        }
+
+        .bg span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: var(--tr);
+        }
+
+        /* ===== MOBILE HEADER ===== */
+        .vp.mob .ht {
+            padding: 10px 16px;
+        }
+
+        .vp.mob .nv {
+            display: none;
+        }
+
+        .vp.mob .hp {
+            display: none;
+        }
+
+        .vp.mob .bg {
+            display: flex;
+        }
+
+        .vp.mob .bl span,
+        .vp.mob .bt span {
+            display: none;
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mo {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, var(--bd), var(--b));
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+            animation: fi .2s ease;
+        }
+
+        .mo.o {
+            display: flex;
+        }
+
+        @keyframes fi {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .oh {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .oc {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, .15);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .on {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .on a {
+            padding: 14px 16px;
+            color: rgba(255, 255, 255, .9);
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: var(--tr);
+        }
+
+        .on a:hover {
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+        }
+
+        .om {
+            margin-top: auto;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        .mb {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--tr);
+        }
+
+        .mb:hover {
+            background: rgba(255, 255, 255, .25);
+            transform: translateY(-2px);
+        }
+
+        /* ===== PROMO BANNER ===== */
+        .pb {
+            background: linear-gradient(90deg, #fff5eb, #ffe8d6);
+            border-left: 4px solid var(--o);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: #8b4513;
+        }
+
+        [data-theme="dark"] .pb {
+            background: linear-gradient(90deg, #2a1f15, #3a2a1a);
+            color: #ffd4a3;
+        }
+
+        .pb svg {
+            flex-shrink: 0;
+        }
+
+        .pb a {
+            color: var(--b);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .vp.mob .pb {
+            padding: 10px 16px;
+            font-size: 12px;
+        }
+
+        /* ===== HERO ===== */
+        .he {
+            padding: 48px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            background: var(--bg);
+        }
+
+        .htl {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--t);
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .htl span {
+            color: var(--b);
+        }
+
+        .hd2 {
+            font-size: 16px;
+            color: var(--ts);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .hb {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .bp {
+            padding: 14px 28px;
+            background: var(--b);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--tr);
+            box-shadow: 0 4px 14px rgba(0, 85, 170, .3);
+        }
+
+        .bp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 85, 170, .4);
+        }
+
+        .bs {
+            padding: 14px 28px;
+            background: var(--bg2);
+            color: var(--t);
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            border: 1px solid var(--br);
+            transition: var(--tr);
+        }
+
+        .bs:hover {
+            background: var(--br);
+        }
+
+        .hv {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .sg {
+            width: 220px;
+            height: 220px;
+            position: relative;
+        }
+
+        .gc {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gs {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--b);
+        }
+
+        .gl {
+            font-size: 13px;
+            color: var(--ts);
+        }
+
+        .gu {
+            font-size: 14px;
+            color: var(--ts);
+            margin-top: 4px;
+        }
+
+        .sc {
+            padding: 10px 20px;
+            background: #fff0e6;
+            color: var(--o);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vp.mob .he {
+            grid-template-columns: 1fr;
+            padding: 32px 16px;
+            text-align: center;
+        }
+
+        .vp.mob .htl {
+            font-size: 26px;
+        }
+
+        .vp.mob .hb {
+            justify-content: center;
+        }
+
+        /* ===== SERVICES ===== */
+        .sc2 {
+            padding: 48px 24px;
+        }
+
+        .st {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--t);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .ss {
+            font-size: 15px;
+            color: var(--ts);
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .srg {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .sr {
+            background: var(--cb);
+            border: 1px solid var(--br);
+            border-radius: var(--r);
+            padding: 28px 20px;
+            text-align: center;
+            transition: var(--tr);
+            cursor: pointer;
+        }
+
+        .sr:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--sh2);
+            border-color: var(--b);
+        }
+
+        .si {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 16px;
+            background: #e6f0fa;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--b);
+        }
+
+        [data-theme="dark"] .si {
+            background: rgba(0, 85, 170, .2);
+        }
+
+        .sr h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--t);
+            margin-bottom: 8px;
+        }
+
+        .sr p {
+            font-size: 14px;
+            color: var(--ts);
+            line-height: 1.5;
+        }
+
+        .vp.mob .srg {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .vp.mob .sr {
+            padding: 20px 12px;
+        }
+
+        .vp.mob .si {
+            width: 44px;
+            height: 44px;
+        }
+
+        /* ===== TARIFFS ===== */
+        .tg {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .tc {
+            background: var(--cb);
+            border: 2px solid var(--br);
+            border-radius: var(--r);
+            padding: 28px;
+            position: relative;
+            transition: var(--tr);
+        }
+
+        .tc:hover {
+            border-color: var(--b);
+            box-shadow: var(--sh2);
+        }
+
+        .tc.p {
+            border-color: var(--o);
+        }
+
+        .pd {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--o);
+            color: #fff;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tsp {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--b);
+            background: #e6f0fa;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        [data-theme="dark"] .tsp {
+            background: rgba(0, 85, 170, .2);
+        }
+
+        .tn {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--t);
+            margin-bottom: 8px;
+        }
+
+        .tp {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--t);
+            margin-bottom: 4px;
+        }
+
+        .tp span {
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--ts);
+        }
+
+        .tl {
+            list-style: none;
+            margin: 16px 0;
+        }
+
+        .tl li {
+            padding: 6px 0;
+            font-size: 14px;
+            color: var(--ts);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--br);
+        }
+
+        .tl li:last-child {
+            border-bottom: none;
+        }
+
+        .tl li::before {
+            content: "✓";
+            color: #00c853;
+            font-weight: 700;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--b);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--tr);
+        }
+
+        .btn:hover {
+            background: #004494;
+        }
+
+        .tc.p .btn {
+            background: var(--o);
+        }
+
+        .tc.p .btn:hover {
+            background: #e55a2b;
+        }
+
+        .vp.mob .tg {
+            grid-template-columns: 1fr;
+        }
+
+        /* ===== NEWS ===== */
+        .ng {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .nc {
+            background: var(--cb);
+            border: 1px solid var(--br);
+            border-radius: var(--r);
+            overflow: hidden;
+            transition: var(--tr);
+            cursor: pointer;
+        }
+
+        .nc:hover {
+            box-shadow: var(--sh2);
+            border-color: var(--b);
+        }
+
+        .nt {
+            height: 160px;
+            background: linear-gradient(135deg, #e6f0fa, #dbeafe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--b);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        [data-theme="dark"] .nt {
+            background: linear-gradient(135deg, #1a2332, #0f1a2a);
+            color: #6b9fd4;
+        }
+
+        .nb {
+            padding: 20px;
+        }
+
+        .nd {
+            font-size: 12px;
+            color: var(--ts);
+            margin-bottom: 8px;
+        }
+
+        .ntt {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--t);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .nx {
+            font-size: 14px;
+            color: var(--ts);
+            line-height: 1.5;
+        }
+
+        .vp.mob .ng {
+            grid-template-columns: 1fr;
+        }
+
+        /* ===== CONTACTS ===== */
+        .cl {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .cc {
+            background: var(--cb);
+            border: 1px solid var(--br);
+            border-radius: var(--r);
+            padding: 24px;
+            transition: var(--tr);
+        }
+
+        .cc:hover {
+            box-shadow: var(--sh);
+            border-color: var(--b);
+        }
+
+        .cc h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--t);
+            margin-bottom: 12px;
+        }
+
+        .cr {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--ts);
+        }
+
+        .cr svg {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .mp {
+            background: var(--bg2);
+            border-radius: var(--r);
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ts);
+            font-size: 14px;
+            border: 1px solid var(--br);
+        }
+
+        .rq {
+            margin-top: 24px;
+            background: var(--cb);
+            border: 1px solid var(--br);
+            border-radius: var(--r);
+            padding: 24px;
+        }
+
+        .rq h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--t);
+            margin-bottom: 16px;
+        }
+
+        .rr {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--br);
+            font-size: 14px;
+        }
+
+        .rr:last-child {
+            border-bottom: none;
+        }
+
+        .rl {
+            color: var(--ts);
+        }
+
+        .rv {
+            color: var(--t);
+            font-weight: 500;
+        }
+
+        .vp.mob .cl {
+            grid-template-columns: 1fr;
+        }
+
+        /* ===== FLOATING CHAT ===== */
+        .fc {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            z-index: 50;
+        }
+
+        .fcb {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--b);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(0, 85, 170, .4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--tr);
+        }
+
+        .fcb:hover {
+            transform: scale(1.05);
+        }
+
+        .cm {
+            position: absolute;
+            bottom: 68px;
+            right: 0;
+            background: var(--cb);
+            border: 1px solid var(--br);
+            border-radius: var(--r);
+            padding: 8px;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: var(--sh2);
+            min-width: 180px;
+        }
+
+        .cm.o {
+            display: flex;
+        }
+
+        .cm a {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--t);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--tr);
+            text-decoration: none;
+        }
+
+        .cm a:hover {
+            background: var(--bg2);
+        }
+
+        /* ===== FOOTER ===== */
+        .ft {
+            background: linear-gradient(135deg, var(--bd), var(--b));
+            color: rgba(255, 255, 255, .8);
+            padding: 40px 24px 24px;
+        }
+
+        .fg {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .fc2 h4 {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .fc2 a {
+            display: block;
+            color: rgba(255, 255, 255, .7);
+            font-size: 14px;
+            padding: 4px 0;
+            transition: var(--tr);
+            text-decoration: none;
+        }
+
+        .fc2 a:hover {
+            color: #fff;
+        }
+
+        .fb {
+            border-top: 1px solid rgba(255, 255, 255, .1);
+            padding-top: 20px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, .5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vp.mob .fg {
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .vp.mob .fb {
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+        }
+
+        /* ===== PAGES ===== */
+        .pc {
+            display: none;
+        }
+
+        .pc.a {
+            display: block;
+        }
+
+        .shr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .shr .st {
+            text-align: left;
+            margin-bottom: 0;
+        }
+
+        .shr .ss {
+            text-align: left;
+            margin-bottom: 0;
+            margin-top: 4px;
+        }
+
+        .vp.mob .shr {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .bva {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--bg);
+            border: 1px solid var(--br);
+            border-radius: 8px;
+            color: var(--b);
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--tr);
+            text-decoration: none;
+        }
+
+        .bva:hover {
+            background: #e6f0fa;
+            border-color: var(--b);
+        }
+
+        [data-theme="dark"] .bva:hover {
+            background: rgba(0, 85, 170, .2);
+        }
+    </style>
+    <base target="_blank">
+</head>
+
+<body>
+    <div class="wrap" id="wWrap">
+        <!-- ===== TOP BAR ===== -->
+        <div class="bar">
+            <div class="g">
+                <button class="cb a" data-pg="home" onclick="sp('home')">Главная</button>
+                <button class="cb" data-pg="tariffs" onclick="sp('tariffs')">Тарифы</button>
+                <button class="cb" data-pg="news" onclick="sp('news')">Новости</button>
+                <button class="cb" data-pg="contacts" onclick="sp('contacts')">Контакты</button>
+            </div>
+            <div class="g">
+                <button class="cb a" data-view="desk" onclick="sv('desk')">Десктоп</button>
+                <button class="cb" data-view="mob" onclick="sv('mob')">Мобильная</button>
+            </div>
+            <div class="g">
+                <button class="cb" onclick="th()" id="tBtn">🌙 Тёмная</button>
+            </div>
+        </div>
+
+        <!-- ===== VIEWPORT ===== -->
+        <div class="vp desk" id="vp" data-theme="light">
+            <!-- ===== HEADER ===== -->
+            <header class="hd">
+                <div class="ht">
+                    <div class="lg">
+                        <div class="li">PT</div>
+                        <div>
+                            <div class="lt">ПРОМТЕЛЕКОМ</div>
+                            <div class="ls">Интернет и ТВ для дома и бизнеса</div>
+                        </div>
+                    </div>
+                    <div class="ha">
+                        <div class="hp">
+                            8 (800) 555-35-35
+                            <span>Бесплатно для абонентов</span>
+                        </div>
+                        <button class="bt" onclick="th()" title="Переключить тему">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                            </svg>
+                            <span>Тема</span>
+                        </button>
+                        <button class="bl">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            <span>Личный кабинет</span>
+                        </button>
+                        <button class="bg" onclick="tm()">
+                            <span></span><span></span><span></span>
+                        </button>
+                    </div>
+                </div>
+                <nav class="nv">
+                    <a class="nl a" data-nav="home" onclick="sp('home')">Главная</a>
+                    <a class="nl" data-nav="tariffs" onclick="sp('tariffs')">Тарифы</a>
+                    <a class="nl">Интернет</a>
+                    <a class="nl">Телевидение</a>
+                    <a class="nl">IPTV</a>
+                    <a class="nl">Бизнесу</a>
+                    <a class="nl" data-nav="news" onclick="sp('news')">Новости</a>
+                    <a class="nl" data-nav="contacts" onclick="sp('contacts')">Контакты</a>
+                </nav>
+            </header>
+
+            <!-- ===== MOBILE OVERLAY ===== -->
+            <div class="mo" id="mo">
+                <div class="oh">
+                    <div class="lg">
+                        <div class="li">PT</div>
+                        <div class="lt" style="color:#fff">ПРОМТЕЛЕКОМ</div>
+                    </div>
+                    <button class="oc" onclick="tm()">✕</button>
+                </div>
+                <nav class="on">
+                    <a onclick="sp('home');tm()">Главная</a>
+                    <a onclick="sp('tariffs');tm()">Тарифы</a>
+                    <a>Интернет</a>
+                    <a>Телевидение</a>
+                    <a>IPTV</a>
+                    <a>Бизнесу</a>
+                    <a onclick="sp('news');tm()">Новости</a>
+                    <a onclick="sp('contacts');tm()">Контакты</a>
+                    <a>Личный кабинет</a>
+                </nav>
+                <div class="om">
+                    <div class="mb">VK</div>
+                    <div class="mb">TG</div>
+                    <div class="mb">B24</div>
+                    <div class="mb">MX</div>
+                </div>
+            </div>
+
+            <!-- ===== PROMO BANNER ===== -->
+            <div class="pb">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <div>
+                    <strong>Важно:</strong> с 1 сентября 2025 года требуется обновление паспортных данных.
+                    <a href="#">Подробнее →</a>
+                </div>
+            </div>
+
+            <!-- ===== PAGE: HOME ===== -->
+            <div class="pc a" id="p-home">
+                <!-- Hero -->
+                <section class="he">
+                    <div>
+                        <h1 class="htl">Быстрый интернет <span>для вашего дома</span></h1>
+                        <p class="hd2">Скорость до 1 Гбит/с, стабильное соединение и круглосуточная поддержка. Подключайтесь к надёжному провайдеру.</p>
+                        <div class="hb">
+                            <button class="bp">Подключить</button>
+                            <button class="bs" onclick="sp('tariffs')">Все тарифы</button>
+                        </div>
+                    </div>
+                    <div class="hv">
+                        <div class="sg">
+                            <svg viewBox="0 0 200 120" style="width:100%;height:auto">
+                                <path fill="none" stroke="var(--br)" stroke-width="12" d="M20 100A80 80 0 0 1 180 100"/>
+                                <path fill="none" stroke="var(--b)" stroke-width="12" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="70" d="M20 100A80 80 0 0 1 180 100"/>
+                            </svg>
+                            <div class="gc">
+                                <div class="gs">950</div>
+                                <div class="gl">Мбит/с</div>
+                                <div class="gu">Доступная скорость</div>
+                            </div>
+                        </div>
+                        <div class="sc">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                            </svg>
+                            Проверить скорость
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Services -->
+                <section class="sc2" style="background:var(--bg2)">
+                    <h2 class="st">Наши услуги</h2>
+                    <p class="ss">Комплексные решения для дома и бизнеса</p>
+                    <div class="srg">
+                        <div class="sr">
+                            <div class="si">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                                    <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                                    <line x1="12" y1="20" x2="12.01" y2="20"/>
+                                </svg>
+                            </div>
+                            <h3>Интернет</h3>
+                            <p>Высокоскоростной доступ по оптоволокну</p>
+                        </div>
+                        <div class="sr">
+                            <div class="si">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                    <line x1="8" y1="21" x2="16" y2="21"/>
+                                    <line x1="12" y1="17" x2="12" y2="21"/>
+                                </svg>
+                            </div>
+                            <h3>Телевидение</h3>
+                            <p>Цифровое и интерактивное ТВ</p>
+                        </div>
+                        <div class="sr">
+                            <div class="si">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                            </div>
+                            <h3>Телефония</h3>
+                            <p>Надёжная связь с выгодными тарифами</p>
+                        </div>
+                        <div class="sr">
+                            <div class="si">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                            </div>
+                            <h3>Для бизнеса</h3>
+                            <p>Корпоративные решения 24/7</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tariffs -->
+                <section class="sc2">
+                    <div class="shr">
+                        <div>
+                            <h2 class="st">Популярные тарифы</h2>
+                            <p class="ss">Выберите оптимальный план</p>
+                        </div>
+                        <button class="bva" onclick="sp('tariffs')">Смотреть все тарифы →</button>
+                    </div>
+                    <div class="tg">
+                        <div class="tc">
+                            <div class="tsp">100 Мбит/с</div>
+                            <div class="tn">Старт</div>
+                            <div class="tp">350 <span>₽/мес</span></div>
+                            <ul class="tl">
+                                <li>Скорость до 100 Мбит/с</li>
+                                <li>Безлимитный трафик</li>
+                                <li>Wi-Fi роутер в аренду</li>
+                            </ul>
+                            <button class="btn">Подключить</button>
+                        </div>
+                        <div class="tc p">
+                            <div class="pd">Популярный</div>
+                            <div class="tsp">500 Мбит/с</div>
+                            <div class="tn">Комфорт</div>
+                            <div class="tp">550 <span>₽/мес</span></div>
+                            <ul class="tl">
+                                <li>Скорость до 500 Мбит/с</li>
+                                <li>Безлимитный трафик</li>
+                                <li>Wi-Fi роутер в подарок</li>
+                                <li>Техподдержка 24/7</li>
+                            </ul>
+                            <button class="btn">Подключить</button>
+                        </div>
+                        <div class="tc">
+                            <div class="tsp">1 Гбит/с</div>
+                            <div class="tn">Максимум</div>
+                            <div class="tp">850 <span>₽/мес</span></div>
+                            <ul class="tl">
+                                <li>Скорость до 1 Гбит/с</li>
+                                <li>Безлимитный трафик</li>
+                                <li>Premium Wi-Fi роутер</li>
+                                <li>Статический IP</li>
+                            </ul>
+                            <button class="btn">Подключить</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- News -->
+                <section class="sc2" style="background:var(--bg2)">
+                    <div class="shr">
+                        <div>
+                            <h2 class="st">Новости компании</h2>
+                            <p class="ss">Последние обновления</p>
+                        </div>
+                        <button class="bva" onclick="sp('news')">Все новости →</button>
+                    </div>
+                    <div class="ng">
+                        <div class="nc">
+                            <div class="nt">📰 Новость 1</div>
+                            <div class="nb">
+                                <div class="nd">5 августа 2025</div>
+                                <div class="ntt">Запуск нового узла связи</div>
+                                <div class="nx">Расширение покрытия сети для корпоративных клиентов...</div>
+                            </div>
+                        </div>
+                        <div class="nc">
+                            <div class="nt">📰 Новость 2</div>
+                            <div class="nb">
+                                <div class="nd">28 июля 2025</div>
+                                <div class="ntt">Обновление паспортных данных</div>
+                                <div class="nx">Просим обновить данные до 1 сентября...</div>
+                            </div>
+                        </div>
+                        <div class="nc">
+                            <div class="nt">📰 Новость 3</div>
+                            <div class="nb">
+                                <div class="nd">15 июля 2025</div>
+                                <div class="ntt">Новые тарифы на интернет и ТВ</div>
+                                <div class="nx">Специальные условия для новых подключений...</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== PAGE: TARIFFS ===== -->
+            <div class="pc" id="p-tariffs">
+                <section class="sc2">
+                    <h2 class="st">Все тарифы</h2>
+                    <p class="ss">Для дома и бизнеса</p>
+
+                    <div style="margin-bottom:32px">
+                        <h3 style="font-size:20px;font-weight:600;color:var(--t);margin-bottom:16px">Для дома — Ethernet</h3>
+                        <div class="tg">
+                            <div class="tc">
+                                <div class="tsp">50 Мбит/с</div>
+                                <div class="tn">Лайт</div>
+                                <div class="tp">299 <span>₽/мес</span></div>
+                                <ul class="tl">
+                                    <li>Скорость до 50 Мбит/с</li>
+                                    <li>Безлимит</li>
+                                </ul>
+                                <button class="btn">Подключить</button>
+                            </div>
+                            <div class="tc">
+                                <div class="tsp">100 Мбит/с</div>
+                                <div class="tn">Старт</div>
+                                <div class="tp">350 <span>₽/мес</span></div>
+                                <ul class="tl">
+                                    <li>Скорость до 100 Мбит/с</li>
+                                    <li>Безлимит</li>
+                                    <li>Wi-Fi роутер</li>
+                                </ul>
+                                <button class="btn">Подключить</button>
+                            </div>
+                            <div class="tc p">
+                                <div class="pd">Хит</div>
+                                <div class="tsp">500 Мбит/с</div>
+                                <div class="tn">Комфорт</div>
+                                <div class="tp">550 <span>₽/мес</span></div>
+                                <ul class="tl">
+                                    <li>Скорость до 500 Мбит/с</li>
+                                    <li>Безлимит</li>
+                                    <li>Роутер в подарок</li>
+                                    <li>24/7 поддержка</li>
+                                </ul>
+                                <button class="btn">Подключить</button>
+                            </div>
+                            <div class="tc">
+                                <div class="tsp">1 Гбит/с</div>
+                                <div class="tn">Максимум</div>
+                                <div class="tp">850 <span>₽/мес</span></div>
+                                <ul class="tl">
+                                    <li>Скорость до 1 Гбит/с</li>
+                                    <li>Безлимит</li>
+                                    <li>Premium роутер</li>
+                                    <li>Статический IP</li>
+                                </ul>
+                                <button class="btn">Подключить</button>
+                            </div>
+                            <div class="tc">
+                                <div class="tsp">1 Гбит/с</div>
+                                <div class="tn">Ультра</div>
+                                <div class="tp">1200 <span>₽/мес</span></div>
+                                <ul class="tl">
+                                    <li>Симметричный 1 Гбит/с</li>
+                                    <li>Безлимит</li>
+                                    <li>Mesh система</li>
+                                    <li>Выделенная линия</li>
+                                </ul>
+                                <button class="btn">Подключить</button>
+                            </div>
+                            <div class="tc">
+                                <div class="tsp">100 Мбит/с</div>
+                                <div class="tn">Старт + ТВ</div>
+                                <div class="tp">450 <span>₽/мес</span></div>
+                                <ul class="tl">
+                                    <li>Интернет 100 Мбит/с</li>
+                                    <li>120+ ТВ каналов</li>
+                                    <li>Wi-Fi роутер</li>
+                                </ul>
+                                <button class="btn">Подключить</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="font-size:20px;font-weight:600;color:var(--t);margin-bottom:16px">Для бизнеса</h3>
+                        <div class="tg">
+                            <div class="tc">
+                                <div class="tsp">100 Мбит/с</div>
+                                <div class="tn">Бизнес-Старт</div>
+                                <div class="tp">1500 <span>₽/мес</span></div>
+                                <ul class="tl">
+                                    <li>Скорость до 100 Мбит/с</li>
+                                    <li>SLA 99.9%</li>
+                                    <li>Статический IP</li>
+                                </ul>
+                                <button class="btn">Подключить</button>
+                            </div>
+                            <div class="tc">
+                                <div class="tsp">500 Мбит/с</div>
+                                <div class="tn">Бизнес-Про</div>
+                                <div class="tp">3500 <span>₽/мес</span></div>
+                                <ul class="tl">
+                                    <li>Скорость до 500 Мбит/с</li>
+                                    <li>SLA 99.95%</li>
+                                    <li>Блок IP-адресов</li>
+                                    <li>Приоритетная поддержка</li>
+                                </ul>
+                                <button class="btn">Подключить</button>
+                            </div>
+                            <div class="tc">
+                                <div class="tsp">1+ Гбит/с</div>
+                                <div class="tn">Бизнес-Премиум</div>
+                                <div class="tp" style="font-size:24px">по запросу</div>
+                                <ul class="tl">
+                                    <li>Выделенный канал</li>
+                                    <li>SLA 99.99%</li>
+                                    <li>Индивидуальное решение</li>
+                                </ul>
+                                <button class="btn">Узнать цену</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== PAGE: NEWS ===== -->
+            <div class="pc" id="p-news">
+                <section class="sc2">
+                    <h2 class="st">Новости компании</h2>
+                    <p class="ss">Актуальная информация для абонентов</p>
+                    <div class="ng">
+                        <div class="nc">
+                            <div class="nt">📰 Изображение</div>
+                            <div class="nb">
+                                <div class="nd">5 августа 2025</div>
+                                <div class="ntt">Запуск нового узла связи в промзоне</div>
+                                <div class="nx">Расширили покрытие сети, добавив новый оптический узел...</div>
+                            </div>
+                        </div>
+                        <div class="nc">
+                            <div class="nt">📰 Изображение</div>
+                            <div class="nb">
+                                <div class="nd">28 июля 2025</div>
+                                <div class="ntt">Необходимо обновить паспортные данные</div>
+                                <div class="nx">Просим всех абонентов обновить данные до 1 сентября...</div>
+                            </div>
+                        </div>
+                        <div class="nc">
+                            <div class="nt">📰 Изображение</div>
+                            <div class="nb">
+                                <div class="nd">15 июля 2025</div>
+                                <div class="ntt">Новые выгодные тарифы на интернет и ТВ</div>
+                                <div class="nx">Специальные условия подключения в июле и августе...</div>
+                            </div>
+                        </div>
+                        <div class="nc">
+                            <div class="nt">📰 Изображение</div>
+                            <div class="nb">
+                                <div class="nd">2 июля 2025</div>
+                                <div class="ntt">Технические работы 15 июля</div>
+                                <div class="nx">Плановые работы на сети, возможны кратковременные перерывы...</div>
+                            </div>
+                        </div>
+                        <div class="nc">
+                            <div class="nt">📰 Изображение</div>
+                            <div class="nb">
+                                <div class="nd">18 июня 2025</div>
+                                <div class="ntt">Партнёрство с региональными операторами</div>
+                                <div class="nx">Подписано соглашение о взаимном роуминге...</div>
+                            </div>
+                        </div>
+                        <div class="nc">
+                            <div class="nt">📰 Изображение</div>
+                            <div class="nb">
+                                <div class="nd">5 июня 2025</div>
+                                <div class="ntt">Обновление мобильного приложения</div>
+                                <div class="nx">Новая версия личного кабинета с улучшенным дизайном...</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== PAGE: CONTACTS ===== -->
+            <div class="pc" id="p-contacts">
+                <section class="sc2">
+                    <h2 class="st">Контакты</h2>
+                    <p class="ss">Мы всегда на связи</p>
+                    <div class="cl">
+                        <div>
+                            <div class="cc">
+                                <h3>Центральный офис</h3>
+                                <div class="cr">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                        <circle cx="12" cy="10" r="3"/>
+                                    </svg>
+                                    г. Москва, ул. Промышленная, д. 15, офис 301
+                                </div>
+                                <div class="cr">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                    </svg>
+                                    8 (800) 555-35-35
+                                </div>
+                                <div class="cr">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                        <polyline points="22,6 12,13 2,6"/>
+                                    </svg>
+                                    info@promtele.com
+                                </div>
+                                <div class="cr">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12 6 12 12 16 14"/>
+                                    </svg>
+                                    Пн-Пт: 9:00 — 18:00
+                                </div>
+                            </div>
+                            <div class="cc" style="margin-top:16px">
+                                <h3>Техническая поддержка</h3>
+                                <div class="cr">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                    </svg>
+                                    8 (800) 555-35-36 (круглосуточно)
+                                </div>
+                                <div class="cr">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                        <polyline points="22,6 12,13 2,6"/>
+                                    </svg>
+                                    support@promtele.com
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mp">
+                                <div style="text-align:center">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--ts)" stroke-width="1.5" style="margin:0 auto 8px">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                        <circle cx="12" cy="10" r="3"/>
+                                    </svg>
+                                    <div>Интерактивная карта</div>
+                                    <div style="font-size:12px;margin-top:4px">Яндекс / Google Maps</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rq">
+                        <h3>Реквизиты</h3>
+                        <div class="rr">
+                            <span class="rl">Полное наименование</span>
+                            <span class="rv">ООО «Промтелеком»</span>
+                        </div>
+                        <div class="rr">
+                            <span class="rl">ИНН</span>
+                            <span class="rv">7701234567</span>
+                        </div>
+                        <div class="rr">
+                            <span class="rl">КПП</span>
+                            <span class="rv">770101001</span>
+                        </div>
+                        <div class="rr">
+                            <span class="rl">ОГРН</span>
+                            <span class="rv">1157746123456</span>
+                        </div>
+                        <div class="rr">
+                            <span class="rl">Расчётный счёт</span>
+                            <span class="rv">40702810100000001234</span>
+                        </div>
+                        <div class="rr">
+                            <span class="rl">Банк</span>
+                            <span class="rv">ПАО СБЕРБАНК РОССИИ</span>
+                        </div>
+                        <div class="rr">
+                            <span class="rl">БИК</span>
+                            <span class="rv">044525225</span>
+                        </div>
+                        <div class="rr">
+                            <span class="rl">Корр. счёт</span>
+                            <span class="rv">30101810400000000225</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== FLOATING CHAT ===== -->
+            <div class="fc">
+                <div class="cm" id="cm">
+                    <a><span style="color:#4a76a8;font-weight:600">VK</span> ВКонтакте</a>
+                    <a><span style="color:#0088cc;font-weight:600">TG</span> Telegram</a>
+                    <a><span style="color:#3bc8f5;font-weight:600">B24</span> Битрикс24</a>
+                    <a><span style="color:#ff6b35;font-weight:600">MX</span> Макс</a>
+                </div>
+                <button class="fcb" onclick="tc()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- ===== FOOTER ===== -->
+            <footer class="ft">
+                <div class="fg">
+                    <div class="fc2">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+                            <div class="li" style="background:#fff;color:var(--b);width:32px;height:32px;font-size:12px">PT</div>
+                            <div style="color:#fff;font-weight:700">ПРОМТЕЛЕКОМ</div>
+                        </div>
+                        <p style="font-size:14px;line-height:1.6;opacity:.8">Надёжный интернет-провайдер для дома и бизнеса. Работаем с 2008 года.</p>
+                    </div>
+                    <div class="fc2">
+                        <h4>Услуги</h4>
+                        <a>Интернет</a>
+                        <a>Телевидение</a>
+                        <a>Телефония</a>
+                        <a>Для бизнеса</a>
+                    </div>
+                    <div class="fc2">
+                        <h4>Компания</h4>
+                        <a>О нас</a>
+                        <a>Новости</a>
+                        <a>Вакансии</a>
+                        <a>Контакты</a>
+                    </div>
+                    <div class="fc2">
+                        <h4>Абонентам</h4>
+                        <a>Личный кабинет</a>
+                        <a>Тарифы</a>
+                        <a>Оплата</a>
+                        <a>Поддержка</a>
+                    </div>
+                </div>
+                <div class="fb">
+                    <div>© 2025 Промтелеком. Все права защищены.</div>
+                    <div>8 (800) 555-35-35 · info@promtele.com</div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        function sp(p) {
+            document.querySelectorAll('.pc').forEach(e => e.classList.remove('a'));
+            document.getElementById('p-' + p).classList.add('a');
+            document.querySelectorAll('.cb[data-pg]').forEach(b => b.classList.toggle('a', b.dataset.pg === p));
+            document.querySelectorAll('.nl[data-nav]').forEach(n => n.classList.toggle('a', n.dataset.nav === p));
+        }
+
+        function sv(v) {
+            const e = document.getElementById('vp');
+            e.classList.remove('desk', 'mob');
+            e.classList.add(v);
+            document.querySelectorAll('.cb[data-view]').forEach(b => b.classList.toggle('a', b.dataset.view === v));
+        }
+
+        function th() {
+            const v = document.getElementById('vp');
+            const t = v.getAttribute('data-theme');
+            const n = t === 'light' ? 'dark' : 'light';
+            v.setAttribute('data-theme', n);
+            document.getElementById('tBtn').textContent = n === 'dark' ? '☀️ Светлая' : '🌙 Тёмная';
+        }
+
+        function tm() {
+            document.getElementById('mo').classList.toggle('o');
+        }
+
+        function tc() {
+            document.getElementById('cm').classList.toggle('o');
+        }
+    </script>
+</body>
+</html>
