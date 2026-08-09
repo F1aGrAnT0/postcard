@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Для Катеньки ❤️</title>
+  <!-- Фавиконка (фиолетовое сердечко) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236a0dad'>❤️</text></svg>">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Segoe UI', 'Lucida Handwriting', cursive, sans-serif;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      background-image: url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2%;
+    }
+
+    .center-group {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Облачко */
+    .message-cloud {
+      position: relative;
+      z-index: 30;
+      background: rgba(255, 255, 240, 0.95);
+      padding: 2% 4%;
+      border-radius: 2rem;
+      font-size: clamp(1rem, 2.5vh, 2rem);
+      line-height: 1.6;
+      width: min(70%, 800px);
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      border: 2px solid #c1a5d9;
+      color: #4a2e5c;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.5s ease, transform 0.4s;
+    }
+
+    .message-cloud.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .message-cloud.fade-out {
+      opacity: 0;
+      transform: scale(0.9);
+      pointer-events: none;
+    }
+
+    /* Коллаж */
+    .photo-collage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90%;
+      max-height: 80vh;
+      width: auto;
+      height: auto;
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2%;
+      opacity: 0;
+      transition: opacity 1s ease;
+      z-index: 25;
+      pointer-events: none;
+    }
+
+    .photo-collage.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .photo-collage img:nth-child(1) { grid-column: 1; grid-row: 1; }
+    .photo-collage img:nth-child(2) { grid-column: 3; grid-row: 1; }
+    .photo-collage img:nth-child(3) { grid-column: 1; grid-row: 2; }
+    .photo-collage img:nth-child(4) { grid-column: 3; grid-row: 2; }
+    .photo-collage img:nth-child(5) { grid-column: 2; grid-row: 1 / 3; }
+
+    .photo-collage img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      border: 3px solid white;
+      transition: transform 0.3s;
+    }
+
+    .photo-collage img:hover {
+      transform: scale(1.02);
+      z-index: 40;
+    }
+
+    /* Цветы */
+    .flower {
+      position: absolute;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transform-origin: 50% 50%;
+      opacity: 0;
+      transform: scale(0) rotate(0deg);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 20;
+      pointer-events: auto;
+    }
+
+    .flower img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Пульсация */
+    @keyframes softPulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.8; }
+    }
+
+    .flower.pulse {
+      animation: softPulse 1.5s ease-in-out infinite;
+    }
+
+    .flower.show {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+
+    .flower.spin {
+      animation: spin 4s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Размеры цветов */
+    .flower-1 { width: min(24vh, 28vmin, 240px); height: min(24vh, 28vmin, 240px); }
+    .flower-2, .flower-3 { width: min(20vh, 24vmin, 200px); height: min(20vh, 24vmin, 200px); }
+    .flower-4, .flower-5 { width: min(22vh, 26vmin, 220px); height: min(22vh, 26vmin, 220px); }
+
+    .flower-1 { top: 5%; left: 50%; transform: translate(-50%, -50%); }
+    .flower-2 { bottom: 5%; left: 20%; transform: translate(0, 50%); }
+    .flower-3 { bottom: 5%; right: 20%; transform: translate(0, 50%); }
+    .flower-4 { top: 15%; left: 10%; transform: translate(-50%, -50%); }
+    .flower-5 { top: 15%; right: 10%; transform: translate(50%, -50%); }
+
+    @media (min-aspect-ratio: 1/1) {
+      .flower-1 { width: min(28vh, 240px); height: min(28vh, 240px); }
+      .flower-2, .flower-3 { width: min(24vh, 200px); height: min(24vh, 200px); }
+      .flower-4, .flower-5 { width: min(26vh, 220px); height: min(26vh, 220px); }
+    }
+
+    /* Сердечко */
+    .heart-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1vh;
+      margin-top: auto;
+      padding-bottom: 2%;
+      z-index: 40;
+      transition: z-index 0.3s;
+    }
+
+    .heart-btn.hidden-behind {
+      z-index: 5; /* Уходит за коллаж */
+    }
+
+    .heart-btn img {
+      display: block;
+      width: min(20vh, 25vmin, 250px);
+      height: auto;
+      transition: transform 0.2s;
+    }
+
+    .heart-btn:hover img {
+      transform: scale(1.1);
+    }
+
+    .heart-btn span {
+      font-size: clamp(1rem, 3vh, 2rem);
+      color: #3d2b4a;
+      background: rgba(255,255,240,0.8);
+      padding: 0.5rem 2rem;
+      border-radius: 3rem;
+      white-space: nowrap;
+      transition: opacity 0.3s;
+    }
+
+    .heart-btn.hide-text span {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      14% { transform: scale(1.3); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.3); }
+      56% { transform: scale(1); }
+      70% { transform: scale(1.1); }
+      84% { transform: scale(1); }
+      100% { transform: scale(1); }
+    }
+
+    .heart-btn.beating img {
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+
+    @media (max-width: 768px) {
+      .photo-collage {
+        max-height: 70vh;
+        gap: 1%;
+      }
+      .photo-collage img {
+        border-radius: 12px;
+        border-width: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="content">
+      <div class="center-group">
+        <div class="message-cloud" id="messageCloud"></div>
+
+        <div class="photo-collage" id="photoCollage">
+          <img src="photo/1.jpg" alt="фото 1">
+          <img src="photo/2.jpg" alt="фото 2">
+          <img src="photo/3.jpg" alt="фото 3">
+          <img src="photo/4.jpg" alt="фото 4">
+          <img src="photo/5.jpg" alt="фото 5 центральное">
+        </div>
+
+        <!-- Цветы -->
+        <button class="flower flower-1" id="flower1"><img src="images/flower1.png" alt="цветок"></button>
+        <button class="flower flower-2" id="flower2"><img src="images/flower2.png" alt="цветок"></button>
+        <button class="flower flower-3" id="flower3"><img src="images/flower3.png" alt="цветок"></button>
+        <button class="flower flower-4" id="flower4"><img src="images/flower4.png" alt="цветок"></button>
+        <button class="flower flower-5" id="flower5"><img src="images/flower5.png" alt="цветок"></button>
+      </div>
+
+      <button class="heart-btn" id="heartBtn">
+        <img src="images/heart.png" alt="сердечко">
+        <span>Жмяк))</span>
+      </button>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+    <source src="music.ogg" type="audio/ogg">
+  </audio>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const heartBtn = document.getElementById('heartBtn');
+      const messageCloud = document.getElementById('messageCloud');
+      const photoCollage = document.getElementById('photoCollage');
+      const bgMusic = document.getElementById('bgMusic');
+      
+      const flower1 = document.getElementById('flower1');
+      const flower2 = document.getElementById('flower2');
+      const flower3 = document.getElementById('flower3');
+      const flower4 = document.getElementById('flower4');
+      const flower5 = document.getElementById('flower5');
+
+      const texts = [
+        'Милая Катенька, поздравляю тебя с праздником 8 марта !!!',
+        'Желаю тебе всегда пребывать в хорошем настроении и очаровывать окружающих своей красотой !!!',
+        'Пусть никогда не остывает задорный огонёк в твоих очаровательных глазках !!!',
+        'Частого и большого вдохновения для свершения всех твоих идей и планов !!!',
+        'Поддержки, заботы и нежности от близких людей, крепкого здоровья, уюта и тепла в доме и на душе, гармонии и женского счастья !!!',
+        'Пусть тебя радует и окрыляет каждое мгновение и всегда тепло светит солнышко !!!'
+      ];
+
+      let step = 0;
+      let musicStarted = false;
+      let collageTimer = null;
+
+      function activateFlower(flower) {
+        if (!flower) return;
+        flower.classList.remove('pulse');
+        flower.classList.add('spin');
+      }
+
+      // Сердечко
+      heartBtn.addEventListener('click', () => {
+        if (step === 0) {
+          messageCloud.classList.add('show');
+          messageCloud.innerText = texts[0];
+          
+          // Первый цветок появляется и пульсирует
+          flower1.classList.add('show', 'pulse');
+          step = 1;
+        }
+        
+        if (!musicStarted) {
+          bgMusic.play()
+            .then(() => musicStarted = true)
+            .catch(() => alert('🔊 Нажми ещё раз для музыки'));
+        }
+        
+        heartBtn.classList.add('hide-text');
+      });
+
+      // Цветок 1
+      flower1.addEventListener('click', () => {
+        if (step === 1) {
+          messageCloud.innerText = texts[1];
+          activateFlower(flower1);
+          flower2.classList.add('show', 'pulse');
+          step = 2;
+        }
+      });
+
+      // Цветок 2
+      flower2.addEventListener('click', () => {
+        if (step === 2) {
+          messageCloud.innerText = texts[2];
+          activateFlower(flower2);
+          flower3.classList.add('show', 'pulse');
+          step = 3;
+        }
+      });
+
+      // Цветок 3
+      flower3.addEventListener('click', () => {
+        if (step === 3) {
+          messageCloud.innerText = texts[3];
+          activateFlower(flower3);
+          flower4.classList.add('show', 'pulse');
+          step = 4;
+        }
+      });
+
+      // Цветок 4
+      flower4.addEventListener('click', () => {
+        if (step === 4) {
+          messageCloud.innerText = texts[4];
+          activateFlower(flower4);
+          flower5.classList.add('show', 'pulse');
+          step = 5;
+        }
+      });
+
+      // Цветок 5 (последний)
+      flower5.addEventListener('click', () => {
+        if (step === 5) {
+          messageCloud.innerText = texts[5];
+          activateFlower(flower5); // теперь просто вращается
+          step = 6;
+          heartBtn.classList.add('beating');
+          
+          if (collageTimer) clearTimeout(collageTimer);
+          collageTimer = setTimeout(() => {
+            messageCloud.classList.add('fade-out');
+            photoCollage.classList.add('show');
+            
+            // Сердечко уходит за коллаж
+            heartBtn.classList.add('hidden-behind');
+          }, 10000);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
