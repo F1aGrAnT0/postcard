@@ -1,0 +1,936 @@
+const TelegramBot = require('node-telegram-bot-api');
+const fs = require('fs');
+const path = require('path');
+
+// ==================== КОНФИГУРАЦИЯ ====================
+
+const TOKEN = '8500974402:AAGdDjdrYNDqjUBU9lIk2g3VAUs5N0-M_GY';
+const CHAT_ID = '-1003334653219';
+const TARGET_DATE = new Date('2027-01-01 00:00:00 GMT+0300');
+
+const STATE_FILE = path.join(__dirname, 'state.json');
+const REMINDERS_FILE = path.join(__dirname, 'reminders.json');
+
+const UPDATE_INTERVAL = 60000;
+const CHECK_REMINDERS_INTERVAL = 15000;
+
+// ==================== СОСТОЯНИЕ ====================
+
+let pinnedMessageId = null;
+let bot = null;
+let botUsername = '';
+let updateTimer = null;
+let reminders = [];
+let reminderTimer = null;
+
+// ==================== ХРАНИЛИЩЕ ====================
+
+function loadState() {
+    try {
+        if (fs.existsSync(STATE_FILE)) {
+            const state = JSON.parse(
+                fs.readFileSync(STATE_FILE, 'utf8')
+            );
+
+            pinnedMessageId = state.pinnedMessageId || null;
+
+            console.log(
+                `📂 Загружено состояние: message_id=${pinnedMessageId}`
+            );
+        } else {
+            console.log('📂 Файл state.json не найден — создадим новый.');
+        }
+    } catch (err) {
+        console.warn(
+            '⚠️ Не удалось загрузить состояние:',
+            err.message
+        );
+        pinnedMessageId = null;
+    }
+}
+
+function saveState() {
+    try {
+        fs.writeFileSync(
+            STATE_FILE,
+            JSON.stringify({ pinnedMessageId }, null, 2)
+        );
+
+        console.log(
+            `💾 Состояние сохранено: message_id=${pinnedMessageId}`
+        );
+    } catch (err) {
+        console.error(
+            '❌ Ошибка сохранения состояния:',
+            err.message
+        );
+    }
+}
+
+function loadReminders() {
+    try {
+        if (fs.existsSync(REMINDERS_FILE)) {
+            reminders = JSON.parse(
+                fs.readFileSync(REMINDERS_FILE, 'utf8')
+            );
+
+            console.log(
+                `📂 Загружено напоминаний: ${reminders.length}`
+            );
+        } else {
+            console.log(
+                '📂 Файл reminders.json не найден — создадим новый.'
+            );
+        }
+    } catch (err) {
+        console.warn(
+            '⚠️ Не удалось загрузить напоминания:',
+            err.message
+        );
+        reminders = [];
+    }
+}
+
+function saveReminders() {
+    try {
+        fs.writeFileSync(
+            REMINDERS_FILE,
+            JSON.stringify(reminders, null, 2)
+        );
+    } catch (err) {
+        console.error(
+            '❌ Ошибка сохранения напоминаний:',
+            err.message
+        );
+    }
+}
+
+// ==================== ОБРАТНЫЙ ОТСЧЁТ ====================
+
+function getTimeRemaining() {
+    const now = new Date();
+    const diff = TARGET_DATE - now;
+
+    if (diff <= 0) {
+        return '🎉🎄🎆🥗С новой годой!!!🎉 🎇🎁🪅🥂';
+    }
+
+    const days = Math.floor(
+        diff / (1000 * 60 * 60 * 24)
+    );
+
+    const hours = Math.floor(
+        (diff % (1000 * 60 * 60 * 24)) /
+        (1000 * 60 * 60)
+    );
+
+    const minutes = Math.floor(
+        (diff % (1000 * 60 * 60)) /
+        (1000 * 60)
+    );
+
+    const seconds = Math.floor(
+        (diff % (1000 * 60)) /
+        1000
+    );
+
+    return `До новой годы осталось ♥️\n\n` +
+           `${days} дн\n` +
+           `${String(hours).padStart(2, '0')}:` +
+           `${String(minutes).padStart(2, '0')}:` +
+           `${String(seconds).padStart(2, '0')} ♥️`;
+}
+
+// ==================== ОБНОВЛЕНИЕ ЗАКРЕПЛЁННОГО СООБЩЕНИЯ ====================
+
+async function updatePinnedMessage() {
+    if (!bot) {
+        console.log('⏳ updatePinnedMessage: bot ещё не готов');
+        return;
+    }
+
+    const text = getTimeRemaining();
+
+    console.log(
+        `🔄 Обновление счётчика. message_id=${pinnedMessageId}`
+    );
+
+    try {
+        if (pinnedMessageId) {
+            console.log(
+                `✏️ Пытаемся изменить сообщение ${pinnedMessageId}...`
+            );
+
+            await bot.editMessageText(text, {
+                chat_id: CHAT_ID,
+                message_id: pinnedMessageId
+            });
+
+            console.log(
+                `✅ Сообщение ${pinnedMessageId} успешно обновлено.`
+            );
+
+        } else {
+            console.log(
+                `📨 Закреплённого сообщения нет. Отправляем новое...`
+            );
+
+            const sent = await bot.sendMessage(
+                CHAT_ID,
+                text
+            );
+
+            pinnedMessageId = sent.message_id;
+
+            console.log(
+                `📨 Новое сообщение создано: message_id=${pinnedMessageId}`
+            );
+
+            saveState();
+
+            console.log(
+                `📌 Пытаемся закрепить сообщение ${pinnedMessageId}...`
+            );
+
+            await bot.pinChatMessage(
+                CHAT_ID,
+                pinnedMessageId,
+                {
+                    disable_notification: true
+                }
+            );
+
+            console.log(
+                `✅ Сообщение ${pinnedMessageId} закреплено.`
+            );
+        }
+
+    } catch (err) {
+        console.error(
+            '❌ Ошибка обновления закреплённого сообщения:'
+        );
+
+        console.error('   message:', err.message);
+        console.error('   code:', err.code || 'нет');
+        console.error('   response:', err.response?.body || 'нет');
+
+        // Если сообщение удалено / недоступно
+        if (
+            err.message &&
+            (
+                err.message.includes('message to edit not found') ||
+                err.message.includes('MESSAGE_ID_INVALID') ||
+                err.message.includes('message identifier is not specified') ||
+                err.message.includes('Bad Request: message to edit not found')
+            )
+        ) {
+            console.log(
+                '♻️ Старое сообщение недоступно. Сбрасываем message_id.'
+            );
+
+            pinnedMessageId = null;
+            saveState();
+        }
+
+        // Если сообщение просто не изменилось — это не критическая ошибка
+        if (
+            err.message &&
+            err.message.includes('message is not modified')
+        ) {
+            console.log(
+                'ℹ️ Текст сообщения не изменился — всё нормально.'
+            );
+        }
+    }
+}
+
+// ==================== ПАРСЕР НАПОМИНАНИЙ ====================
+
+function parseReminder(text, now) {
+    let str = text
+        .replace(/@\w+\s*/g, '')
+        .replace(/^напомни\s*/i, '')
+        .trim();
+
+    const date = new Date(now);
+
+    const relMatch = str.match(
+        /через\s+(\d+)\s*(минут\w*|мин\.?|час\w*|ч\.?|дн\w*|дн\.?)/i
+    );
+
+    if (relMatch) {
+        const n = parseInt(relMatch[1], 10);
+        const unit = relMatch[2].toLowerCase();
+
+        if (unit.startsWith('мин')) {
+            date.setMinutes(date.getMinutes() + n);
+        } else if (unit.startsWith('ч')) {
+            date.setHours(date.getHours() + n);
+        } else {
+            date.setDate(date.getDate() + n);
+        }
+
+        str = str.replace(relMatch[0], '').trim();
+
+        const t = extractTime(str, date);
+
+        if (t) {
+            str = t.remaining;
+        }
+
+        if (!str) return null;
+
+        return {
+            remindAt: date,
+            text: str
+        };
+    }
+
+    if (/послезавтра/i.test(str)) {
+        date.setDate(date.getDate() + 2);
+        str = str.replace(/послезавтра/i, '').trim();
+
+    } else if (/завтра/i.test(str)) {
+        date.setDate(date.getDate() + 1);
+        str = str.replace(/завтра/i, '').trim();
+
+    } else if (/сегодня/i.test(str)) {
+        str = str.replace(/сегодня/i, '').trim();
+    }
+
+    const timeRes = extractTime(str, date);
+
+    if (timeRes) {
+        str = timeRes.remaining;
+    } else {
+        date.setHours(10, 0, 0, 0);
+    }
+
+    if (date <= now) {
+        date.setDate(date.getDate() + 1);
+    }
+
+    if (!str) return null;
+
+    return {
+        remindAt: date,
+        text: str
+    };
+}
+
+function extractTime(str, date) {
+    const m = str.match(
+        /(?:в\s+)?(\d{1,2}):(\d{2})/
+    );
+
+    if (!m) return null;
+
+    const h = parseInt(m[1], 10);
+    const min = parseInt(m[2], 10);
+
+    if (h > 23 || min > 59) {
+        return null;
+    }
+
+    date.setHours(h, min, 0, 0);
+
+    return {
+        remaining: str
+            .replace(m[0], '')
+            .replace(/^в\s+/, '')
+            .trim()
+    };
+}
+
+function formatDateTime(d) {
+    return d.toLocaleString(
+        'ru-RU',
+        {
+            day: 'numeric',
+            month: 'long',
+            hour: '2-digit',
+            minute: '2-digit'
+        }
+    );
+}
+
+// ==================== ПЛАНИРОВЩИК НАПОМИНАНИЙ ====================
+
+async function checkReminders() {
+    if (!bot || reminders.length === 0) {
+        return;
+    }
+
+    const now = Date.now();
+
+    const due = reminders.filter(
+        r => r.remindAt <= now
+    );
+
+    if (due.length === 0) {
+        return;
+    }
+
+    console.log(
+        `🔔 Найдено напоминаний к отправке: ${due.length}`
+    );
+
+    for (const r of due) {
+        try {
+            const mention = r.username
+                ? `@${r.username}`
+                : `<a href="tg://user?id=${r.userId}">${r.firstName || 'друг'}</a>`;
+
+            await bot.sendMessage(
+                r.chatId,
+                `🔔 <b>Напоминание!</b>\n\n` +
+                `${mention}, ты просил(а) напомнить:\n` +
+                `💬 ${r.text}`,
+                {
+                    parse_mode: 'HTML'
+                }
+            );
+
+            console.log(
+                `🔔 Напоминание отправлено: ${r.text}`
+            );
+
+        } catch (err) {
+            console.error(
+                '❌ Ошибка отправки напоминания:',
+                err.message
+            );
+        }
+    }
+
+    reminders = reminders.filter(
+        r => r.remindAt > now
+    );
+
+    saveReminders();
+}
+
+// ==================== ОБРАБОТКА КОМАНД ====================
+
+function setupHandlers() {
+
+    bot.onText(/\/start/, async (msg) => {
+        try {
+            await bot.sendMessage(
+                msg.chat.id,
+                '🤖 Бот работает!\n\n' +
+                'Команды:\n' +
+                '/напомни завтра купить рыбу, мясо, молоко в 19:23\n' +
+                '/напомни через 2 часа выключить плиту\n' +
+                '/напомни послезавтра оплатить интернет в 12:00\n' +
+                '/myreminders — мои напоминания\n' +
+                '/cancelreminder N — отменить напоминание №N'
+            );
+
+            console.log(
+                `📩 /start обработан от ${msg.from?.username || msg.from?.id}`
+            );
+
+        } catch (err) {
+            console.error(
+                '❌ Ошибка обработки /start:',
+                err.message
+            );
+        }
+    });
+
+    bot.onText(
+        /\/напомни\s+(.+)/i,
+        handleReminderCommand
+    );
+
+    bot.on(
+        'message',
+        (msg) => {
+            if (!msg.text || msg.text.startsWith('/')) {
+                return;
+            }
+
+            const mentioned =
+                botUsername &&
+                msg.entities?.some(e =>
+                    e.type === 'mention' &&
+                    msg.text.substring(
+                        e.offset,
+                        e.offset + e.length
+                    ) === `@${botUsername}`
+                );
+
+            const hasKeyword =
+                /(^|\s)напомни\s/i.test(msg.text);
+
+            if (
+                (mentioned && hasKeyword) ||
+                (msg.chat.type === 'private' && hasKeyword)
+            ) {
+                const text = botUsername
+                    ? msg.text
+                        .replace(`@${botUsername}`, '')
+                        .trim()
+                    : msg.text.trim();
+
+                handleReminderCommand(
+                    msg,
+                    [null, text]
+                );
+            }
+        }
+    );
+
+    bot.onText(
+        /\/myreminders/,
+        async (msg) => {
+            try {
+                const mine = reminders.filter(
+                    r => r.userId === msg.from.id
+                );
+
+                if (mine.length === 0) {
+                    return bot.sendMessage(
+                        msg.chat.id,
+                        '📭 У тебя нет активных напоминаний.'
+                    );
+                }
+
+                const list = mine
+                    .sort(
+                        (a, b) =>
+                            a.remindAt - b.remindAt
+                    )
+                    .map(
+                        (r, i) =>
+                            `${i + 1}. ⏰ ` +
+                            `${formatDateTime(new Date(r.remindAt))} — ` +
+                            `${r.text}`
+                    )
+                    .join('\n');
+
+                await bot.sendMessage(
+                    msg.chat.id,
+                    `📝 Твои напоминания:\n\n${list}`
+                );
+
+            } catch (err) {
+                console.error(
+                    '❌ Ошибка /myreminders:',
+                    err.message
+                );
+            }
+        }
+    );
+
+    bot.onText(
+        /\/cancelreminder\s+(\d+)/,
+        async (msg, match) => {
+            try {
+                const idx =
+                    parseInt(match[1], 10) - 1;
+
+                const mine = reminders
+                    .filter(
+                        r => r.userId === msg.from.id
+                    )
+                    .sort(
+                        (a, b) =>
+                            a.remindAt - b.remindAt
+                    );
+
+                if (
+                    idx < 0 ||
+                    idx >= mine.length
+                ) {
+                    return bot.sendMessage(
+                        msg.chat.id,
+                        '❌ Нет напоминания с таким номером. Смотри /myreminders'
+                    );
+                }
+
+                const removed = mine[idx];
+
+                reminders = reminders.filter(
+                    r => r !== removed
+                );
+
+                saveReminders();
+
+                await bot.sendMessage(
+                    msg.chat.id,
+                    `🗑 Напоминание удалено: ${removed.text}`
+                );
+
+            } catch (err) {
+                console.error(
+                    '❌ Ошибка /cancelreminder:',
+                    err.message
+                );
+            }
+        }
+    );
+
+    // ==================== ОШИБКИ TELEGRAM ====================
+
+    bot.on(
+        'polling_error',
+        (err) => {
+            console.error(
+                '\n⚠️ ОШИБКА POLLING'
+            );
+
+            console.error(
+                '   message:',
+                err.message
+            );
+
+            console.error(
+                '   code:',
+                err.code || 'нет'
+            );
+
+            console.error(
+                '   response:',
+                err.response?.body || 'нет'
+            );
+
+            console.error('');
+        }
+    );
+
+    bot.on(
+        'error',
+        (err) => {
+            console.error(
+                '⚠️ ОШИБКА БОТА:',
+                err.message
+            );
+        }
+    );
+}
+
+// ==================== ОБРАБОТКА НАПОМИНАНИЯ ====================
+
+async function handleReminderCommand(msg, match) {
+    try {
+        const parsed = parseReminder(
+            match[1],
+            new Date()
+        );
+
+        if (!parsed) {
+            return bot.sendMessage(
+                msg.chat.id,
+                '❌ Не понял. Примеры:\n' +
+                '/напомни завтра купить рыбу в 19:23\n' +
+                '/напомни через 30 минут проверить духовку'
+            );
+        }
+
+        reminders.push({
+            id:
+                Date.now() +
+                Math.random()
+                    .toString(36)
+                    .slice(2, 8),
+
+            chatId: msg.chat.id,
+
+            userId: msg.from.id,
+
+            username:
+                msg.from.username || null,
+
+            firstName:
+                msg.from.first_name || null,
+
+            text: parsed.text,
+
+            remindAt:
+                parsed.remindAt.getTime()
+        });
+
+        saveReminders();
+
+        await bot.sendMessage(
+            msg.chat.id,
+            `✅ Запомнил! Напомню ` +
+            `${formatDateTime(parsed.remindAt)}:\n` +
+            `💬 ${parsed.text}`
+        );
+
+        console.log(
+            `📝 Новое напоминание от ` +
+            `${msg.from.username || msg.from.id}: ` +
+            `"${parsed.text}"`
+        );
+
+    } catch (err) {
+        console.error(
+            '❌ Ошибка handleReminderCommand:',
+            err.message
+        );
+    }
+}
+
+// ==================== ЗАПУСК ====================
+
+async function startBot() {
+
+    console.log('');
+    console.log('========================================');
+    console.log('🚀 ЗАПУСК TELEGRAM-БОТА');
+    console.log('========================================');
+
+    loadState();
+    loadReminders();
+
+    console.log('');
+    console.log('🔌 Создаём объект TelegramBot...');
+
+    // ВАЖНО:
+    // polling пока НЕ запускаем.
+    // Сначала проверяем getMe().
+    bot = new TelegramBot(
+        TOKEN,
+        {
+            polling: false,
+            request: {
+                timeout: 10000
+            }
+        }
+    );
+
+    console.log('✅ Объект TelegramBot создан.');
+
+    // ==================== ПРОВЕРКА TELEGRAM API ====================
+
+    console.log('');
+    console.log('🌐 Проверяем связь с Telegram через getMe()...');
+
+    try {
+        const me = await bot.getMe();
+
+        botUsername = me.username || '';
+
+        console.log('');
+        console.log('✅ TELEGRAM API ОТВЕТИЛ!');
+        console.log(`   ID: ${me.id}`);
+        console.log(`   username: @${me.username}`);
+        console.log(`   name: ${me.first_name}`);
+        console.log('');
+
+    } catch (err) {
+
+        console.error('');
+        console.error('❌ TELEGRAM API НЕ ОТВЕТИЛ!');
+        console.error('   message:', err.message);
+        console.error('   code:', err.code || 'нет');
+        console.error(
+            '   response:',
+            err.response?.body || 'нет'
+        );
+        console.error('');
+
+        console.error(
+            '🛑 Бот НЕ будет запускать polling.'
+        );
+
+        return;
+    }
+
+    // ==================== ОБРАБОТЧИКИ ====================
+
+    console.log('⚙️ Устанавливаем обработчики...');
+    setupHandlers();
+    console.log('✅ Обработчики установлены.');
+
+    // ==================== POLLING ====================
+
+    console.log('');
+    console.log('📡 Запускаем Telegram polling...');
+
+    try {
+        await bot.startPolling({
+            restart: true,
+            params: {
+                timeout: 10
+            }
+        });
+
+        console.log(
+            '✅ Telegram polling запущен.'
+        );
+
+    } catch (err) {
+
+        console.error('');
+        console.error(
+            '❌ НЕ УДАЛОСЬ ЗАПУСТИТЬ POLLING!'
+        );
+
+        console.error(
+            '   message:',
+            err.message
+        );
+
+        console.error(
+            '   code:',
+            err.code || 'нет'
+        );
+
+        console.error(
+            '   response:',
+            err.response?.body || 'нет'
+        );
+
+        console.error('');
+
+        return;
+    }
+
+    // ==================== ТАЙМЕРЫ ====================
+
+    console.log('');
+    console.log(
+        '⏳ Запускаем первый тест обновления через 2 секунды...'
+    );
+
+    setTimeout(async () => {
+        console.log('');
+        console.log('▶️ Запущен первый updatePinnedMessage()');
+
+        try {
+            await updatePinnedMessage();
+            console.log(
+                '✅ Первый updatePinnedMessage() завершён.'
+            );
+        } catch (err) {
+            console.error(
+                '💥 Ошибка первого updatePinnedMessage():',
+                err
+            );
+        }
+    }, 2000);
+
+    if (updateTimer) {
+        clearInterval(updateTimer);
+    }
+
+    updateTimer = setInterval(
+        async () => {
+            try {
+                await updatePinnedMessage();
+            } catch (err) {
+                console.error(
+                    '💥 Ошибка периодического обновления:',
+                    err
+                );
+            }
+        },
+        UPDATE_INTERVAL
+    );
+
+    if (reminderTimer) {
+        clearInterval(reminderTimer);
+    }
+
+    reminderTimer = setInterval(
+        async () => {
+            try {
+                await checkReminders();
+            } catch (err) {
+                console.error(
+                    '💥 Ошибка проверки напоминаний:',
+                    err
+                );
+            }
+        },
+        CHECK_REMINDERS_INTERVAL
+    );
+
+    console.log('');
+    console.log('========================================');
+    console.log('✅ БОТ ПОЛНОСТЬЮ ЗАПУЩЕН');
+    console.log(
+        `⏱ Счётчик: каждые ${UPDATE_INTERVAL / 1000} сек.`
+    );
+    console.log(
+        `🔔 Напоминания: каждые ${CHECK_REMINDERS_INTERVAL / 1000} сек.`
+    );
+    console.log(
+        `🎯 Целевая дата: ${TARGET_DATE.toLocaleString()}`
+    );
+    console.log(
+        `🤖 Бот: @${botUsername}`
+    );
+    console.log('========================================');
+    console.log('');
+}
+
+// ==================== ОСТАНОВКА ====================
+
+process.on(
+    'SIGINT',
+    async () => {
+        console.log('');
+        console.log('🛑 Бот останавливается...');
+
+        if (updateTimer) {
+            clearInterval(updateTimer);
+        }
+
+        if (reminderTimer) {
+            clearInterval(reminderTimer);
+        }
+
+        if (bot) {
+            try {
+                await bot.stopPolling();
+                console.log(
+                    '📡 Telegram polling остановлен.'
+                );
+            } catch (err) {
+                console.error(
+                    '⚠️ Ошибка остановки polling:',
+                    err.message
+                );
+            }
+        }
+
+        console.log('👋 Бот остановлен.');
+        process.exit(0);
+    }
+);
+
+// ==================== ГЛОБАЛЬНЫЕ ОШИБКИ ====================
+
+process.on(
+    'uncaughtException',
+    (err) => {
+        console.error('');
+        console.error(
+            '💥 НЕОБРАБОТАННОЕ ИСКЛЮЧЕНИЕ:'
+        );
+        console.error(err);
+        console.error('');
+    }
+);
+
+process.on(
+    'unhandledRejection',
+    (reason) => {
+        console.error('');
+        console.error(
+            '💥 НЕОБРАБОТАННЫЙ PROMISE REJECTION:'
+        );
+        console.error(reason);
+        console.error('');
+    }
+);
+
+// ==================== СТАРТ ====================
+
+startBot();

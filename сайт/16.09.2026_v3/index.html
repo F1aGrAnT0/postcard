@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Промтелеком — интернет и ТВ для дома и бизнеса. Собственная оптоволоконная сеть, скорость до 1 Гбит/с, поддержка 24/7.">
+    <title>Промтелеком — интернет и ТВ для дома и бизнеса</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="vp" data-theme="light">
+    <!-- ================= HEADER ================= -->
+    <header class="hd">
+        <div class="ht">
+            <a class="lg" href="index.html">
+                <img class="logo-img" src="https://promtele.com/ru/images/logo/logo11.png" alt="Промтелеком">
+                <div>
+                    <div class="lt">ПРОМТЕЛЕКОМ</div>
+                    <div class="ls">Интернет и ТВ для дома и бизнеса</div>
+                </div>
+            </a>
+            <div class="ha">
+                <div class="hp">7 (949) 340-0-340<span>круглосуточно</span></div>
+                <button class="hbtn" onclick="th()" title="Переключить тему">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <span>Тема</span>
+                </button>
+                <!-- ОПЛАТА: кнопка + веер способов оплаты.
+                     Координаты каждой кнопки веера заданы ниже inline (--x, --y, --d):
+                     --x / --y — смещение от центра кнопки "Оплатить", --d — задержка вылета.
+                     ВПИШИТЕ РЕАЛЬНЫЕ ССЫЛКИ НА ОПЛАТУ вместо href="#" у ПСБ/Сбер/PayBerry/А-ПЭЙ. -->
+                <div class="paywrap" id="paywrap">
+                    <a class="hbtn" href="#" id="payMain" role="button" aria-expanded="false" aria-haspopup="true" title="Оплата услуг">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                        <span>Оплатить</span>
+                    </a>
+                    <div class="pfan" id="pfan" role="menu" aria-label="Способы оплаты">
+                        <a class="pi" role="menuitem" href="#" target="_blank" rel="noopener" style="--x:-268px;--y:24px;--d:0ms">ПСБ</a>
+                        <a class="pi" role="menuitem" href="#" target="_blank" rel="noopener" style="--x:-134px;--y:42px;--d:50ms">Сбер</a>
+                        <a class="pi" role="menuitem" href="#" target="_blank" rel="noopener" style="--x:0px;--y:52px;--d:100ms">PayBerry</a>
+                        <a class="pi" role="menuitem" href="#" target="_blank" rel="noopener" style="--x:134px;--y:42px;--d:150ms">А-ПЭЙ</a>
+                        <button class="pi pq" type="button" style="--x:268px;--y:24px;--d:200ms" aria-label="Другие способы оплаты">?</button>
+                        <div class="ptip" id="ptip" role="tooltip">
+                            <b>Другие способы оплаты</b>
+                            Оплатить можно в офисах банков, отделениях Почты России и платёжных терминалах.
+                            По вопросам оплаты: +7 (949) 340-1-340 (круглосуточно).
+                        </div>
+                    </div>
+                </div>
+                <a class="hbtn" href="#" title="Личный кабинет">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span>Личный кабинет</span>
+                </a>
+                <button class="bg" onclick="tm()" aria-label="Меню"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+        <nav class="nv">
+            <a class="nl a" data-nav="home" href="index.html">Главная</a>
+            <a class="nl" data-nav="tariffs" href="tariffs.html">Тарифы</a>
+            <a class="nl" href="tariffs.html">Интернет</a>
+            <a class="nl" href="tariffs.html">Телевидение</a>
+            <a class="nl" href="tariffs.html">IPTV</a>
+            <a class="nl" href="tariffs.html">Бизнесу</a>
+            <a class="nl" data-nav="news" href="news.html">Новости</a>
+            <a class="nl" data-nav="contacts" href="contacts.html">Контакты</a>
+        </nav>
+    </header>
+
+    <!-- ================= MOBILE MENU ================= -->
+    <div class="mo" id="mo">
+        <div class="oh">
+            <div class="lg">
+                <img class="logo-img" src="https://promtele.com/ru/images/logo/logo11.png" alt="Промтелеком">
+                <div class="lt">ПРОМТЕЛЕКОМ</div>
+            </div>
+            <button class="oc" onclick="tm()">✕</button>
+        </div>
+        <nav class="on">
+            <a href="index.html" onclick="tm()">Главная</a>
+            <a href="tariffs.html" onclick="tm()">Тарифы</a>
+            <a href="tariffs.html" onclick="tm()">Интернет</a>
+            <a href="tariffs.html" onclick="tm()">Телевидение</a>
+            <a href="tariffs.html" onclick="tm()">IPTV</a>
+            <a href="tariffs.html" onclick="tm()">Бизнесу</a>
+            <a href="news.html" onclick="tm()">Новости</a>
+            <a href="contacts.html" onclick="tm()">Контакты</a>
+            <a href="#">Личный кабинет</a>
+        </nav>
+        <div class="om">
+            <div class="mb">VK</div>
+            <div class="mb">TG</div>
+            <div class="mb">B24</div>
+            <div class="mb">MX</div>
+        </div>
+    </div>
+
+    <!-- ================= INFO BANNER ================= -->
+    <div class="pb">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <div><strong>Важно:</strong> просим абонентов актуализировать паспортные данные. <a href="#">Подробнее →</a></div>
+    </div>
+
+    <main>
+        <div class="container">
+
+            <!-- 1. HERO: позиционирование + проверка адреса + CTA -->
+            <section class="he">
+                <div>
+                    <h1 class="htl">Интернет, который не подводит: <span>своя сеть — свои обязательства</span></h1>
+                    <p class="hd2">Собственная оптоволоконная сеть Промтелеком с 2008 года. Скорость до 1 Гбит/с, аптайм 99,9%, живые инженеры в поддержке 24/7 — без ботов и «оставайтесь на линии».</p>
+                    <form class="addr" id="addr-form">
+                        <input type="text" id="addr-input" placeholder="Улица и номер дома — проверим покрытие" autocomplete="off">
+                        <button class="bp" type="submit">Проверить</button>
+                    </form>
+                    <div class="addr-msg" id="addr-msg"></div>
+                    <div class="hb">
+                        <a class="bp" href="tariffs.html" style="display:inline-flex;align-items:center">Подключить</a>
+                        <a class="bs" href="tariffs.html" style="display:inline-flex;align-items:center">Все тарифы</a>
+                    </div>
+                </div>
+                <div class="hv">
+                    <div class="sg">
+                        <svg viewBox="0 0 240 180">
+                            <defs>
+                                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="var(--br)" stroke-width="0.5" opacity="0.5"/>
+                                </pattern>
+                            </defs>
+                            <rect width="240" height="180" fill="url(#grid)"/>
+                            <path d="M0 90 Q60 80 120 90 T240 90" fill="none" stroke="var(--ts)" stroke-width="3" opacity="0.3"/>
+                            <path d="M120 0 Q130 60 120 120 T120 180" fill="none" stroke="var(--ts)" stroke-width="3" opacity="0.3"/>
+                            <circle cx="120" cy="90" r="35" fill="var(--b)" opacity="0.15"/>
+                            <circle cx="120" cy="90" r="20" fill="var(--b)" opacity="0.2"/>
+                            <circle cx="60" cy="140" r="25" fill="var(--b)" opacity="0.12"/>
+                            <circle cx="180" cy="50" r="20" fill="var(--b)" opacity="0.12"/>
+                            <circle cx="120" cy="90" r="5" fill="var(--b)"/>
+                            <circle cx="60" cy="140" r="4" fill="var(--b)"/>
+                            <circle cx="180" cy="50" r="4" fill="var(--b)"/>
+                        </svg>
+                        <div class="sgb"><i></i>Онлайн-карта покрытия</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 2. Промтелеком в цифрах -->
+        <section class="sc2 alt">
+            <div class="container">
+                <h2 class="st">Промтелеком в цифрах</h2>
+                <p class="ss">Доказательство масштаба, а не обещания</p>
+                <div class="st4">
+                    <div class="stat"><b>18</b><span>лет на рынке — с 2008 года</span></div>
+                    <div class="stat"><b>25 000+</b><span>абонентов дома и в бизнесе</span></div>
+                    <div class="stat"><b>99,9%</b><span>аптайм сети за последний год</span></div>
+                    <div class="stat"><b>300+ км</b><span>собственной оптоволоконной сети</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Услуги / сценарии для дома -->
+        <section class="sc2">
+            <div class="container">
+                <h2 class="st">Услуги для дома</h2>
+                <p class="ss">Комплексные решения под любые сценарии</p>
+                <div class="srg">
+                    <div class="sr">
+                        <div class="si"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+                        <h3>Интернет</h3>
+                        <p>Высокоскоростной доступ по собственному оптоволокну до 1 Гбит/с</p>
+                    </div>
+                    <div class="sr">
+                        <div class="si"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+                        <h3>Телевидение</h3>
+                        <p>Цифровое и интерактивное ТВ — до 130 каналов, архив и онлайн-кинотеатры</p>
+                    </div>
+                    <div class="sr">
+                        <div class="si"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                        <h3>Телефония</h3>
+                        <p>Городской номер с выгодными тарифами на местную и мобильную связь</p>
+                    </div>
+                    <div class="sr">
+                        <div class="si"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                        <h3>Для бизнеса</h3>
+                        <p>Выделенные каналы, SLA до 99,99%, приоритетный выезд инженера</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Популярные тарифы (рендерятся из единого источника) -->
+        <section class="sc2 alt">
+            <div class="container">
+                <div class="shr">
+                    <div>
+                        <h2 class="st">Популярные тарифы</h2>
+                        <p class="ss">Цены актуальны и совпадают с каталогом — единый источник данных</p>
+                    </div>
+                    <a class="bva" href="tariffs.html">Смотреть все тарифы →</a>
+                </div>
+                <div class="tg" id="home-tariffs"></div>
+            </div>
+        </section>
+
+        <!-- 5. Почему Промтелеком -->
+        <section class="sc2">
+            <div class="container">
+                <h2 class="st">Почему Промтелеком</h2>
+                <p class="ss">Инфраструктура, надёжность и поддержка — то, что скрыто от глаз</p>
+                <div class="wy">
+                    <div class="why">
+                        <div class="si"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+                        <h3>Собственная инфраструктура</h3>
+                        <p>Мы не перепродаём чужой канал: своя оптика, свои узлы, свои инженеры. Контролируем качество на всём пути от магистрали до роутера.</p>
+                    </div>
+                    <div class="why">
+                        <div class="si"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                        <h3>Реальная надёжность</h3>
+                        <p>Дублированные магистральные каналы, резерв питания на узлах, мониторинг 24/7. Аптайм сети 99,9% — по данным мониторинга, а не из рекламы.</p>
+                    </div>
+                    <div class="why">
+                        <div class="si"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+                        <h3>Живая поддержка 24/7</h3>
+                        <p>Телефон отвечает человек, а не робот. Среднее время реакции — до 15 минут, выезд инженера — в день обращения.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Отдельный B2B-блок -->
+        <section class="sc2 alt">
+            <div class="container">
+                <div class="b2b">
+                    <div>
+                        <h2>Бизнесу: связь, на которую можно закладываться</h2>
+                        <p>Обеспечим офис, производство или торговую сеть выделенным каналом с гарантиями по договору. Личный менеджер и приоритетный выезд инженера.</p>
+                        <ul>
+                            <li>SLA до 99,99% с финансовой ответственностью</li>
+                            <li>Статические IP и блоки адресов</li>
+                            <li>Монтаж и настройка за 3 рабочих дня</li>
+                        </ul>
+                        <button class="btn" onclick="openOrder('bpro')">Обсудить задачу</button>
+                    </div>
+                    <div class="b2bcard">
+                        <div class="tsp">для бизнеса</div>
+                        <div class="tn" style="color:#fff">Бизнес-Про</div>
+                        <div class="tp">3 500 <span style="color:rgba(255,255,255,.6)">₽/мес</span></div>
+                        <small>500 Мбит/с · SLA 99,95% · блок IP · приоритет 24/7</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Карта покрытия -->
+        <section class="sc2">
+            <div class="container">
+                <h2 class="st">Зона покрытия</h2>
+                <p class="ss">Работаем там, где проходит наша сеть</p>
+                <div class="cov">
+                    <div class="covl">
+                        <div class="covi"><i></i>Центральный район<small>все улицы</small></div>
+                        <div class="covi"><i></i>Промышленный район<small>все улицы</small></div>
+                        <div class="covi"><i></i>Северный мкр<small>все улицы</small></div>
+                        <div class="covi"><i></i>Южный мкр<small>подключение по заявке</small></div>
+                        <div class="covi"><i></i>Западный мкр<small>II очередь — осень 2026</small></div>
+                        <div class="covi"><i style="background:var(--ts)"></i>Пригород<small>уточняйте по адресу</small></div>
+                    </div>
+                    <div class="mp">
+                        <div style="text-align:center">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--ts)" stroke-width="1.5" style="margin:0 auto 8px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <div>Интерактивная карта покрытия</div>
+                            <div style="font-size:12px;margin-top:4px">интеграция Яндекс / Google Maps</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Поддержка и статус сети -->
+        <section class="sc2 alt">
+            <div class="container">
+                <h2 class="st">Поддержка и статус сети</h2>
+                <p class="ss">Всё прозрачно: видим проблему раньше, чем вы её заметите</p>
+                <div class="status">
+                    <span class="dot"></span>
+                    <div><strong>Все системы работают штатно.</strong> <small>Обновлено только что · мониторинг узлов и магистралей 24/7</small></div>
+                </div>
+                <div class="sup">
+                    <div class="supc">
+                        <h3>Техническая поддержка</h3>
+                        <p>Круглосуточно, без выходных</p>
+                        <b>+7 (949) 340-1-340</b>
+                    </div>
+                    <div class="supc">
+                        <h3>Быстрые каналы</h3>
+                        <p>Ответ в мессенджерах — до 5 минут</p>
+                        <b>Telegram · VK · Макс</b>
+                    </div>
+                    <div class="supc">
+                        <h3>Статус сети онлайн</h3>
+                        <p>Текущие работы и инциденты — на отдельной странице</p>
+                        <b>status.promtele.com</b>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Отзывы и кейсы -->
+        <section class="sc2">
+            <div class="container">
+                <h2 class="st">Отзывы и корпоративные клиенты</h2>
+                <p class="ss">Говорят лучше нас (здесь будут реальные отзывы)</p>
+                <div class="rev">
+                    <div class="revc">
+                        <div class="stars">★★★★★</div>
+                        <p class="q">Перешли от федерального оператора два года назад. Интернет перестал «проседать» вечерами, а когда один раз был сбой — инженер приехал за два часа</p>
+                        <div class="who"><b>Дмитрий К.</b>абонент, Центральный район</div>
+                    </div>
+                    <div class="revc">
+                        <div class="stars">★★★★★</div>
+                        <p class="q">Тянем офис на 40 человек и складскую систему на Бизнес-Про. За год ни одного простоя сверх SLA. Менеджер на связи в мессенджере почти мгновенно</p>
+                        <div class="who"><b>ООО «Вектор-Логистика»</b>корпоративный клиент</div>
+                    </div>
+                    <div class="revc">
+                        <div class="stars">★★★★☆</div>
+                        <p class="q">Подключили дом на тарифе Комфорт: интернет, ТВ и городской телефон одним пакетом. Дешевле, чем три отдельные услуги, и один договор</p>
+                        <div class="who"><b>Наталья С.</b>абонент, Северный мкр</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Новости -->
+        <section class="sc2 alt">
+            <div class="container">
+                <div class="shr">
+                    <div>
+                        <h2 class="st">Новости компании</h2>
+                        <p class="ss">Актуальная информация для абонентов</p>
+                    </div>
+                    <a class="bva" href="news.html">Все новости →</a>
+                </div>
+                <div class="ng">
+                    <div class="nc">
+                        <div class="nt">📰 Фото</div>
+                        <div class="nb">
+                            <div class="nd">5 августа 2025</div>
+                            <div class="ntt">Запуск нового узла связи в промзоне</div>
+                            <div class="nx">Расширили покрытие сети, добавив новый оптический узел...</div>
+                        </div>
+                    </div>
+                    <div class="nc">
+                        <div class="nt">📰 Фото</div>
+                        <div class="nb">
+                            <div class="nd">15 июля 2025</div>
+                            <div class="ntt">Новые выгодные тарифы на интернет и ТВ</div>
+                            <div class="nx">Специальные условия подключения в июле и августе...</div>
+                        </div>
+                    </div>
+                    <div class="nc">
+                        <div class="nt">📰 Фото</div>
+                        <div class="nb">
+                            <div class="nd">2 июля 2025</div>
+                            <div class="ntt">Технические работы 15 июля</div>
+                            <div class="nx">Плановые работы на сети, возможны кратковременные перерывы...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FLOATING CONTACTS ================= -->
+    <div class="fc">
+        <div class="cm" id="cm">
+            <a><span style="color:#4a76a8;font-weight:600">VK</span> ВКонтакте</a>
+            <a><span style="color:#0088cc;font-weight:600">TG</span> Telegram</a>
+            <a><span style="color:#3bc8f5;font-weight:600">B24</span> Битрикс24</a>
+            <a><span style="color:#ff6b35;font-weight:600">MX</span> Макс</a>
+        </div>
+        <button class="fcb" onclick="tc()" aria-label="Связаться с нами">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </button>
+    </div>
+
+    <!-- ================= COMPARE BAR ================= -->
+    <div class="cbar" id="cbar">
+        <span>Выбрано для сравнения: <b id="cbar-count">0</b> (макс. 3)</span>
+        <button class="btn" id="btn-cmp-open">Сравнить</button>
+        <button class="cx" id="btn-cmp-clear">Очистить</button>
+    </div>
+
+    <!-- ================= MODAL: COMPARE ================= -->
+    <div class="ov" id="ov-cmp">
+        <div class="mdl">
+            <button class="x" data-close>✕</button>
+            <h3>Сравнение тарифов</h3>
+            <div id="cmp-body"></div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: ORDER ================= -->
+    <div class="ov" id="ov-order">
+        <div class="mdl" style="max-width:30rem">
+            <button class="x" data-close>✕</button>
+            <h3>Оформление подключения</h3>
+            <form class="ofm" id="of-form">
+                <div>
+                    <label>Выбранный тариф</label>
+                    <input class="ro" id="of-tariff" readonly>
+                </div>
+                <div>
+                    <label>Ваше имя</label>
+                    <input type="text" required placeholder="Иван Петров">
+                </div>
+                <div>
+                    <label>Телефон</label>
+                    <input type="tel" required placeholder="+7 (___) ___-__-__">
+                </div>
+                <div>
+                    <label>Адрес подключения</label>
+                    <input type="text" required placeholder="Улица, дом, квартира">
+                </div>
+                <button class="btn" type="submit">Отправить заявку</button>
+            </form>
+            <div class="osuc hidden" id="of-success">
+                <div class="ok-ic">✓</div>
+                <h3>Заявка принята!</h3>
+                <p style="color:var(--ts);margin-top:0.5rem">Менеджер свяжется с вами в течение 30 минут в рабочее время.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="ft">
+        <div class="container">
+            <div class="fg">
+                <div class="fc2">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+                        <img class="logo-img" src="https://promtele.com/ru/images/logo/logo11.png" alt="Промтелеком">
+                        <div style="color:#fff;font-weight:700">ПРОМТЕЛЕКОМ</div>
+                    </div>
+                    <p>Надёжный интернет-провайдер для дома и бизнеса. Собственная сеть — с 2008 года.</p>
+                </div>
+                <div class="fc2">
+                    <h4>Услуги</h4>
+                    <a href="tariffs.html">Интернет</a>
+                    <a href="tariffs.html">Телевидение</a>
+                    <a href="tariffs.html">Телефония</a>
+                    <a href="tariffs.html">Для бизнеса</a>
+                </div>
+                <div class="fc2">
+                    <h4>Компания</h4>
+                    <a>О нас</a>
+                    <a href="news.html">Новости</a>
+                    <a>Вакансии</a>
+                    <a href="contacts.html">Контакты</a>
+                </div>
+                <div class="fc2">
+                    <h4>Абонентам</h4>
+                    <a>Личный кабинет</a>
+                    <a href="tariffs.html">Тарифы</a>
+                    <a>Оплата</a>
+                    <a href="contacts.html">Поддержка</a>
+                </div>
+            </div>
+            <div class="fb">
+                <div>© 2026 Промтелеком. Все права защищены.</div>
+                <div>+7 (949) 340-1-340 · office@promtele.com</div>
+            </div>
+        </div>
+    </footer>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Контакты Промтелеком: офис, техническая поддержка 24/7, реквизиты.">
+    <title>Контакты — Промтелеком</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="vp" data-theme="light">
+    <!-- ================= HEADER ================= -->
+    <header class="hd">
+        <div class="ht">
+            <a class="lg" href="index.html">
+                <img class="logo-img" src="https://promtele.com/ru/images/logo/logo11.png" alt="Промтелеком">
+                <div>
+                    <div class="lt">ПРОМТЕЛЕКОМ</div>
+                    <div class="ls">Интернет и ТВ для дома и бизнеса</div>
+                </div>
+            </a>
+            <div class="ha">
+                <div class="hp">7 (949) 340-0-340<span>круглосуточно</span></div>
+                <button class="hbtn" onclick="th()" title="Переключить тему">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <span>Тема</span>
+                </button>
+                <!-- ОПЛАТА: кнопка + веер способов оплаты.
+                     Координаты каждой кнопки веера заданы ниже inline (--x, --y, --d):
+                     --x / --y — смещение от центра кнопки "Оплатить", --d — задержка вылета.
+                     ВПИШИТЕ РЕАЛЬНЫЕ ССЫЛКИ НА ОПЛАТУ вместо href="#" у ПСБ/Сбер/PayBerry/А-ПЭЙ. -->
+                <div class="paywrap" id="paywrap">
+                    <a class="hbtn" href="#" id="payMain" role="button" aria-expanded="false" aria-haspopup="true" title="Оплата услуг">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                        <span>Оплатить</span>
+                    </a>
+                    <div class="pfan" id="pfan" role="menu" aria-label="Способы оплаты">
+                        <a class="pi" role="menuitem" href="#" target="_blank" rel="noopener" style="--x:-268px;--y:24px;--d:0ms">ПСБ</a>
+                        <a class="pi" role="menuitem" href="#" target="_blank" rel="noopener" style="--x:-134px;--y:42px;--d:50ms">Сбер</a>
+                        <a class="pi" role="menuitem" href="#" target="_blank" rel="noopener" style="--x:0px;--y:52px;--d:100ms">PayBerry</a>
+                        <a class="pi" role="menuitem" href="#" target="_blank" rel="noopener" style="--x:134px;--y:42px;--d:150ms">А-ПЭЙ</a>
+                        <button class="pi pq" type="button" style="--x:268px;--y:24px;--d:200ms" aria-label="Другие способы оплаты">?</button>
+                        <div class="ptip" id="ptip" role="tooltip">
+                            <b>Другие способы оплаты</b>
+                            Оплатить можно в офисах банков, отделениях Почты России и платёжных терминалах.
+                            По вопросам оплаты: +7 (949) 340-1-340 (круглосуточно).
+                        </div>
+                    </div>
+                </div>
+                <a class="hbtn" href="#" title="Личный кабинет">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span>Личный кабинет</span>
+                </a>
+                <button class="bg" onclick="tm()" aria-label="Меню"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+        <nav class="nv">
+            <a class="nl" data-nav="home" href="index.html">Главная</a>
+            <a class="nl" data-nav="tariffs" href="tariffs.html">Тарифы</a>
+            <a class="nl" href="tariffs.html">Интернет</a>
+            <a class="nl" href="tariffs.html">Телевидение</a>
+            <a class="nl" href="tariffs.html">IPTV</a>
+            <a class="nl" href="tariffs.html">Бизнесу</a>
+            <a class="nl" data-nav="news" href="news.html">Новости</a>
+            <a class="nl a" data-nav="contacts" href="contacts.html">Контакты</a>
+        </nav>
+    </header>
+
+    <!-- ================= MOBILE MENU ================= -->
+    <div class="mo" id="mo">
+        <div class="oh">
+            <div class="lg">
+                <img class="logo-img" src="https://promtele.com/ru/images/logo/logo11.png" alt="Промтелеком">
+                <div class="lt">ПРОМТЕЛЕКОМ</div>
+            </div>
+            <button class="oc" onclick="tm()">✕</button>
+        </div>
+        <nav class="on">
+            <a href="index.html" onclick="tm()">Главная</a>
+            <a href="tariffs.html" onclick="tm()">Тарифы</a>
+            <a href="tariffs.html" onclick="tm()">Интернет</a>
+            <a href="tariffs.html" onclick="tm()">Телевидение</a>
+            <a href="tariffs.html" onclick="tm()">IPTV</a>
+            <a href="tariffs.html" onclick="tm()">Бизнесу</a>
+            <a href="news.html" onclick="tm()">Новости</a>
+            <a href="contacts.html" onclick="tm()">Контакты</a>
+            <a href="#">Личный кабинет</a>
+        </nav>
+        <div class="om">
+            <div class="mb">VK</div>
+            <div class="mb">TG</div>
+            <div class="mb">B24</div>
+            <div class="mb">MX</div>
+        </div>
+    </div>
+
+    <!-- ================= INFO BANNER ================= -->
+    <div class="pb">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <div><strong>Важно:</strong> просим абонентов актуализировать паспортные данные. <a href="#">Подробнее →</a></div>
+    </div>
+
+    <main>
+        <section class="sc2">
+            <div class="container">
+                <h2 class="st">Контакты</h2>
+                <p class="ss">Мы всегда на связи</p>
+                <div class="cl">
+                    <div>
+                        <div class="cc">
+                            <h3>Центральный офис</h3>
+                            <div class="cr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> г. Москва, ул. Промышленная, д. 15, офис 301</div>
+                            <div class="cr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> +7 (949) 340-0-340</div>
+                            <div class="cr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> office@promtele.com</div>
+                            <div class="cr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Пн-Пт: 9:00 — 18:00</div>
+                        </div>
+                        <div class="cc" style="margin-top:1rem">
+                            <h3>Техническая поддержка</h3>
+                            <div class="cr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> +7 (949) 340-1-340 (круглосуточно)</div>
+                            <div class="cr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--b)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> support@promtele.com</div>
+                        </div>
+                    </div>
+                    <div class="mp">
+                        <div style="text-align:center">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--ts)" stroke-width="1.5" style="margin:0 auto 8px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <div>Интерактивная карта</div>
+                            <div style="font-size:12px;margin-top:4px">Яндекс / Google Maps</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rq">
+                    <h3>Реквизиты</h3>
+                    <div class="rr"><span class="rl">Полное наименование</span><span class="rv">ООО «Промтелеком»</span></div>
+                    <div class="rr"><span class="rl">ИНН</span><span class="rv">7701234567</span></div>
+                    <div class="rr"><span class="rl">КПП</span><span class="rv">770101001</span></div>
+                    <div class="rr"><span class="rl">ОГРН</span><span class="rv">1157746123456</span></div>
+                    <div class="rr"><span class="rl">Расчётный счёт</span><span class="rv">40702810100000001234</span></div>
+                    <div class="rr"><span class="rl">Банк</span><span class="rv">ПАО СБЕРБАНК РОССИИ</span></div>
+                    <div class="rr"><span class="rl">БИК</span><span class="rv">044525225</span></div>
+                    <div class="rr"><span class="rl">Корр. счёт</span><span class="rv">30101810400000000225</span></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FLOATING CONTACTS ================= -->
+    <div class="fc">
+        <div class="cm" id="cm">
+            <a><span style="color:#4a76a8;font-weight:600">VK</span> ВКонтакте</a>
+            <a><span style="color:#0088cc;font-weight:600">TG</span> Telegram</a>
+            <a><span style="color:#3bc8f5;font-weight:600">B24</span> Битрикс24</a>
+            <a><span style="color:#ff6b35;font-weight:600">MX</span> Макс</a>
+        </div>
+        <button class="fcb" onclick="tc()" aria-label="Связаться с нами">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </button>
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="ft">
+        <div class="container">
+            <div class="fg">
+                <div class="fc2">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+                        <img class="logo-img" src="https://promtele.com/ru/images/logo/logo11.png" alt="Промтелеком">
+                        <div style="color:#fff;font-weight:700">ПРОМТЕЛЕКОМ</div>
+                    </div>
+                    <p>Надёжный интернет-провайдер для дома и бизнеса. Собственная сеть — с 2008 года.</p>
+                </div>
+                <div class="fc2">
+                    <h4>Услуги</h4>
+                    <a href="tariffs.html">Интернет</a>
+                    <a href="tariffs.html">Телевидение</a>
+                    <a href="tariffs.html">Телефония</a>
+                    <a href="tariffs.html">Для бизнеса</a>
+                </div>
+                <div class="fc2">
+                    <h4>Компания</h4>
+                    <a>О нас</a>
+                    <a href="news.html">Новости</a>
+                    <a>Вакансии</a>
+                    <a href="contacts.html">Контакты</a>
+                </div>
+                <div class="fc2">
+                    <h4>Абонентам</h4>
+                    <a>Личный кабинет</a>
+                    <a href="tariffs.html">Тарифы</a>
+                    <a>Оплата</a>
+                    <a href="contacts.html">Поддержка</a>
+                </div>
+            </div>
+            <div class="fb">
+                <div>© 2026 Промтелеком. Все права защищены.</div>
+                <div>+7 (949) 340-1-340 · office@promtele.com</div>
+            </div>
+        </div>
+    </footer>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
